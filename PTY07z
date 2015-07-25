@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<list>
+using namespace std;
+int count[10001]={0};
+int maxi=0;
+class Graph{
+int v;
+list<int>*adj;
+public:
+Graph(int v)
+{
+    this->v=v+1;
+    adj=new list<int>[v+1];
+}
+void addedge(int v,int w)
+{
+adj[v].push_back(w);
+adj[w].push_back(v);
+}
+int bfs(int s)
+{
+list<int>queue;
+int k;
+bool *visited=new bool[v];
+for(int i=0;i<v;i++)
+    visited[i]=false;
+queue.push_back(s);
+list<int>::iterator i;
+
+while(!queue.empty())
+{
+int l=queue.front();
+visited[l]=true;
+queue.pop_front();
+for(i=adj[l].begin();i!=adj[l].end();i++)
+{
+    if(!visited[*i])
+    {
+     visited[*i]==true;
+     queue.push_back(*i);
+    }
+k=l;
+}
+}
+return k;
+}
+int countbfs(int s)
+{
+list<int>queue;
+int k;
+bool *visited=new bool[v];
+for(int i=0;i<v;i++)
+    visited[i]=false;
+queue.push_back(s);
+list<int>::iterator i;
+while(!queue.empty())
+{
+s=queue.front();
+visited[s]=true;
+queue.pop_front();
+for(i=adj[s].begin();i!=adj[s].end();i++)
+{
+    if(!visited[*i])
+    {
+     visited[*i]==true;
+     queue.push_back(*i);
+     count[*i]=count[s]+1;
+    if(maxi<count[*i])
+        maxi=count[*i];
+    }
+}
+}
+return maxi;
+}
+};
+int main()
+{
+int n,i,s,l,m,start;
+scanf("%d",&n);
+Graph g(n);
+for(i=0;i<n-1;i++)
+{
+    scanf("%d %d",&l,&m);
+if(i==0)
+    start=l;
+    g.addedge(l,m);
+}
+s=g.bfs(start);
+printf("%d\n",g.countbfs(s));
+return 0;
+}
